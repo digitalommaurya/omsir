@@ -1,0 +1,193 @@
+✅ How to Create a Django Project
+🔧 1. Install Python (if not installed)
+
+Make sure Python 3.8+ is installed.
+
+Check with:
+
+python --version
+
+
+If not installed, download from python.org
+.
+
+📦 2. Set up a Virtual Environment (Recommended)
+# Create a new directory for your project
+mkdir myproject
+cd myproject
+
+# Create virtual environment
+python -m venv env
+
+# Activate it
+# On Windows:
+env\Scripts\activate
+# On macOS/Linux:
+source env/bin/activate
+
+📥 3. Install Django
+
+With your virtual environment activated, install Django:
+
+pip install django
+
+
+You can check Django is installed with:
+
+django-admin --version
+
+🚀 4. Create a New Django Project
+django-admin startproject myproject .
+
+
+myproject is your project name. The dot (.) tells Django to create the files in the current directory.
+
+This creates:
+
+myproject/
+├── manage.py
+├── myproject/
+│   ├── __init__.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+
+🏃 5. Run the Development Server
+
+To check that everything works:
+
+python manage.py runserver
+
+
+Then open your browser and go to:
+
+http://127.0.0.1:8000/
+
+
+You should see the default Django welcome page.
+
+🧱 6. Create a Django App (Optional but Common)
+
+A project can have multiple apps (blog, accounts, etc.)
+
+python manage.py startapp myapp
+
+
+Then add 'myapp' to INSTALLED_APPS in myproject/settings.py.
+
+📋 7. (Optional) Create a Requirements File
+
+To track dependencies:
+
+pip freeze > requirements.txt
+
+✅ Summary of Key Commands
+# Create & activate virtual environment
+python -m venv env
+env\Scripts\activate  # (or source env/bin/activate on macOS/Linux)
+
+# Install Django
+pip install django
+
+# Start Django project
+django-admin startproject myproject .
+
+# Run the server
+python manage.py runserver
+
+
+
+
+=========================================
+
+
+✅ Steps to Add and Display HTML Pages in Django
+
+🧱 1. Create a Django App (if you haven't already)
+
+If you haven’t already created an app, run:
+
+python manage.py startapp pages
+
+
+Then add the app to INSTALLED_APPS in settings.py:
+
+# myproject/settings.py
+
+INSTALLED_APPS = [
+    ...
+    'pages',
+]
+
+📁 2. Create the Templates Folder and HTML Files
+
+Inside your pages app, do the following:
+
+👉 Folder Structure
+myapp/
+├── templates/
+│   └── pages/
+│       ├── home.html
+│       └── about.html
+├── views.py
+├── urls.py  ← you'll create this
+...
+
+👉 Example home.html
+<!-- myapp/templates/pages/home.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Home Page</title>
+</head>
+<body>
+    <h1>Welcome to the Home Page!</h1>
+</body>
+</html>
+
+👀 3. Create Views for Your HTML Pages
+
+Edit myapp/views.py:
+
+# pages/views.py
+from django.shortcuts import render
+
+def home(request):
+    return render(request, 'pages/home.html')
+
+def about(request):
+    return render(request, 'pages/about.html')
+
+🌐 4. Set Up URLs
+1. Create a urls.py in your app (if not there)
+# myapp/urls.py
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('about/', views.about, name='about'),
+]
+
+2. Include app URLs in main urls.py
+
+Edit myproject/urls.py:
+
+# myproject/urls.py
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('myapp.urls')),  # include the pages app's URLs
+]
+
+🔁 5. Run the Server and Test
+python manage.py runserver
+
+
+Then open:
+
+Home Page: http://127.0.0.1:8000/
+
+About Page: http://127.0.0.1:8000/about/
